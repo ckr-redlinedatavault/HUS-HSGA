@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PublicForm {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model CalendarEvent {
+  id          String   @id @default(uuid())
+  title       String
+  date        String   // Format: YYYY-MM-DD
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model StudentAdmission {
+  id                String   @id @default(uuid())
+  district          String
+  schoolName        String
+  studentName       String
+  fatherName        String
+  dob               String   // Using String for simplicity with HTML date input
+  className         String   // 'class' is a reserved word
+  aadharNo          String
+  address           String
+  phoneNo           String
+  studentSignature  String   // Base64
+  principalSignature String  // Base64
+  seal              String   // Base64
+  instiId           String?  // Linked to InstiRegister.uniqueId
+  createdAt         DateTime @default(now())
+  
+  // School Data Entry Fields
+  udise             String?
+  management        String?
+  mandal            String?
+  // address already exists
+  chairmanName      String?
+  chairmanMobile    String?
+  headName          String?
+  headPhone         String?
+  altPhone          String?
+  principalEmail    String?
+  instiEmail        String?
+  coordinatorName   String?
+  coordinatorMobile String?
+  mouStatus         String?
+  mouStart          String?
+  mouEnd            String?
+  enrollmentEstimate String?
+  notes             String?
+  staffCount        String?
+  studentCount      String?
+  totalClasses      String?
+  feesCollected     String?
+  recentUpdates     String?
+}
+
+model TraiRegister {
+  id          String   @id @default(uuid())
+  uniqueId    String   @unique  // Format: TRAI-HSGA-0001
+  fullName    String
+  phoneNo     String
+  email       String
+  district    String
+  password    String
+  status      String   @default("PENDING") // PENDING | APPROVED | DECLINED
+  createdAt   DateTime @default(now())
+}
+
+model InstiRegister {
+  id          String   @id @default(uuid())
+  uniqueId    String   @unique  // Format: INST-HSGA-0001
+  instiName   String
+  instiType   String   // SCHOOL | COLLEGE | OTHER
+  headName    String
+  phoneNo     String
+  email       String
+  district    String
+  password    String
+  status      String   @default("PENDING") // PENDING | APPROVED | DECLINED
+  trainerId   String?  // Linked to TraiRegister.uniqueId
+  
+  // Profile Fields
+  udise             String?
+  management        String?
+  mandal            String?
+  address           String?
+  chairmanName      String?
+  chairmanMobile    String?
+  headPhone         String?
+  altPhone          String?
+  principalEmail    String?
+  coordinatorName   String?
+  coordinatorMobile String?
+  mouStatus         String?  @default("PENDING") // PENDING | SIGNED
+  mouStart          String?  // Date string
+  mouEnd            String?  // Date string
+  enrollmentEstimate String?
+  notes             String?
+  staffCount        String?
+  studentCount      String?
+  totalClasses      String?
+  feesCollected     String?
+  recentUpdates     String?
+  
+  isProfileComplete Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+}
